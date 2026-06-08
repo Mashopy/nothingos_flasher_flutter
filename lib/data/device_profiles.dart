@@ -1,0 +1,332 @@
+import '../models/device_profile.dart';
+
+final Map<String, DeviceProfile> deviceProfiles = {
+  // Qualcomm-based devices
+  // Nothing Phone (1) profile
+  "lahaina": DeviceProfile(
+    product: "lahaina",
+    partitions: [
+      "boot",
+      "dtbo",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+    ],
+    fastbootdPartitions: [
+      // Firmware partitions
+      "abl",
+      "aop",
+      "bluetooth",
+      "cpucp",
+      "devcfg",
+      "dsp",
+      "featenabler",
+      "hyp",
+      "imagefv",
+      "keymaster",
+      "modem",
+      "multiimgoem",
+      "qupfw",
+      "shrm",
+      "tz",
+      "uefisecapp",
+      "xbl",
+      "xbl_config",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+    ],
+  ),
+
+  // Nothing Phone (2) profile
+  "kalama": DeviceProfile(
+    product: "kalama",
+    partitions: [
+      "boot",
+      "dtbo",
+      "recovery",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+    ],
+    fastbootdPartitions: [
+      // Firmware partitions
+      "abl",
+      "aop",
+      "aop_config",
+      "bluetooth",
+      "cpucp",
+      "devcfg",
+      "dsp",
+      "featenabler",
+      "hyp",
+      "imagefv",
+      "keymaster",
+      "modem",
+      "multiimgoem",
+      "multiimgqti",
+      "qupfw",
+      "qweslicstore",
+      "shrm",
+      "tz",
+      "uefi",
+      "uefisecapp",
+      "xbl",
+      "xbl_config",
+      "xbl_ramdump",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+      "system_dlkm",
+      "vendor_dlkm",
+      "odm_dlkm",
+    ],
+  ),
+
+  // Nothing Phone (3) and (4a) Pro profile
+  "sun": DeviceProfile(
+    product: "sun",
+    partitions: [
+      "boot",
+      "init_boot",
+      "dtbo",
+      "recovery",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+    ],
+    fastbootdPartitions: [
+      // Firmware partitions
+      "abl",
+      "aop",
+      "aop_config",
+      "bluetooth",
+      "cpucp",
+      "cpucb_dtb",
+      "devcfg",
+      "dsp",
+      "featenabler",
+      "hyp",
+      "imagefv",
+      "keymaster",
+      "modem",
+      "multiimgoem",
+      "multiimgqti",
+      "qupfw",
+      "qweslicstore",
+      "shrm",
+      "soccp_dcd",
+      "soccp_debug",
+      "tz",
+      "uefi",
+      "uefisecapp",
+      "xbl",
+      "xbl_config",
+      "xbl_ramdump",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+      "vendor_dlkm",
+    ],
+  ),
+
+  // Nothing Phone (3a), (3a) Pro and (4a) profile
+  "volcano": DeviceProfile(
+    product: "volcano",
+    partitions: [
+      "boot",
+      "init_boot",
+      "dtbo",
+      "recovery",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+    ],
+    fastbootdPartitions: [
+      // Firmware partitions
+      "abl",
+      "aop",
+      "aop_config",
+      "bluetooth",
+      "cpucp",
+      "devcfg",
+      "dsp",
+      "featenabler",
+      "hyp",
+      "imagefv",
+      "keymaster",
+      "modem",
+      "multiimgoem",
+      "multiimgqti",
+      "qupfw",
+      "qweslicstore",
+      "shrm",
+      "tz",
+      "uefi",
+      "uefisecapp",
+      "xbl",
+      "xbl_config",
+      "xbl_ramdump",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+      "system_dlkm",
+      "vendor_dlkm",
+    ],
+  ),
+
+  // MediaTek-based devices
+  // Nothing Phone (2a) and (2a) Plus profile
+  "k6886v1_64": DeviceProfile(
+    product: "k6886v1_64",
+    partitions: [
+      // Common android partitions
+      "init_boot",
+      "boot",
+      "dtbo",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+      // Firmware partitions
+      "apusys",
+      "audio_dsp",
+      "ccu",
+      "connsys_bt",
+      "connsys_gnss",
+      "connsys_wifi",
+      "dpm",
+      "gpueb",
+      "gz",
+      "lk",
+      "logo",
+      "mcf_ota",
+      "mcupm",
+      "md1img",
+      "mvpu_algo",
+      "pi_img",
+      "scp",
+      "spmfw",
+      "sspm",
+      "tee",
+      "vcp",
+    ],
+    fastbootdPartitions: [
+      // Firmware partitions
+      "preloader_raw",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+      "system_dlkm",
+      "vendor_dlkm",
+      "odm_dlkm",
+    ],
+  ),
+
+  // CMF Phone 1, 2 Pro and Nothing Phone (3a) Lite profile
+  "k6878v1_64": DeviceProfile(
+    product: "k6878v1_64",
+    partitions: [
+      // Common android partitions
+      "boot",
+      "init_boot",
+      "dtbo",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+      // Firmware partitions
+      "apusys",
+      "ccu",
+      "connsys_bt",
+      "connsys_gnss",
+      "connsys_wifi",
+      "dpm",
+      "gpueb",
+      "gz",
+      "lk",
+      "logo",
+      "mcf_ota",
+      "mcupm",
+      "modem",
+      "pi_img",
+      "scp",
+      "spmfw",
+      "sspm",
+      "tee",
+      "vcp",
+    ],
+    fastbootdPartitions: [
+      // Firmware partitions
+      "preloader_raw",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+      "system_dlkm",
+      "vendor_dlkm",
+      "odm_dlkm",
+    ],
+  ),
+
+  // Default profile
+  "default": DeviceProfile(
+    product: "default",
+    partitions: [
+      "boot",
+      "init_boot",
+      "dtbo",
+      "vendor_boot",
+      "vbmeta",
+      "vbmeta_system",
+      "vbmeta_vendor",
+    ],
+    fastbootdPartitions: [
+      "init_boot",
+    ],
+    dynamicPartitions: [
+      // Dynamic partitions
+      "system",
+      "product",
+      "system_ext",
+      "vendor",
+      "odm",
+      "system_dlkm",
+      "vendor_dlkm",
+      "odm_dlkm",
+    ]
+  ),
+};
