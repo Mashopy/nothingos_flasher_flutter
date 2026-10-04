@@ -149,59 +149,61 @@ class _FlashPageState extends State<FlashPage> {
 
                 const Spacer(),
 
-                Container(
-                  width: 260,
+                Padding(
                   padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "Options",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
+                  child: SizedBox(
+                    width: 260,
+                    child: Material(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            "Options",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
 
-                      const SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
-                      CheckboxListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text("Reboot to system"),
-                        value: rebootToSystem,
-                        onChanged: (value) {
-                          setState(() {
-                            rebootToSystem = value ?? true;
-                          });
-                        },
-                      ),
+                          CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text("Reboot to system"),
+                            value: rebootToSystem,
+                            onChanged: (value) {
+                              setState(() {
+                                rebootToSystem = value ?? true;
+                              });
+                            },
+                          ),
 
-                      CheckboxListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text("Format data"),
-                        value: formatData,
-                        onChanged: (value) {
-                          setState(() {
-                            formatData = value ?? false;
-                          });
-                        },
-                      ),
+                          CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text("Format data"),
+                            value: formatData,
+                            onChanged: (value) {
+                              setState(() {
+                                formatData = value ?? false;
+                              });
+                            },
+                          ),
 
-                      CheckboxListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text("Lock the bootloader"),
-                        value: lockBootloader,
-                        onChanged: (value) {
-                          setState(() {
-                            lockBootloader = value ?? false;
-                          });
-                        },
+                          CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text("Lock the bootloader"),
+                            value: lockBootloader,
+                            onChanged: (value) {
+                              setState(() {
+                                lockBootloader = value ?? false;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
@@ -210,11 +212,9 @@ class _FlashPageState extends State<FlashPage> {
             const SizedBox(height: 20),
 
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade900,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+              child: Material(
+                color: Colors.grey.shade900,
+                borderRadius: BorderRadius.circular(8),
                 child: ListView(
                   controller: scrollController,
                   padding: const EdgeInsets.all(8),
