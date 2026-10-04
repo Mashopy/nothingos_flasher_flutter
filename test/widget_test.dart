@@ -5,26 +5,27 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:nothingos_flasher/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('App launches smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    expect(find.byType(MyApp), findsOneWidget);
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  test('NDot57Caps font asset loads successfully', () async {
+    final fontFile = File('assets/fonts/NDot57Caps.otf');
+    expect(fontFile.existsSync(), isTrue, reason: 'Font file missing on disk');
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    final bytes = await rootBundle.load('assets/fonts/NDot57Caps.otf');
+    expect(bytes.lengthInBytes, greaterThan(0));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final fontLoader = FontLoader('NDot57Caps');
+    fontLoader.addFont(Future.value(bytes));
+    await fontLoader.load();
   });
 }
