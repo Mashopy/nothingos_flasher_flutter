@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
+import '../models/flash_step.dart';
 import '../controllers/flash_controller.dart';
 import '../data/device_mapper.dart';
 import '../models/firmware_package.dart';
@@ -99,6 +100,7 @@ class _FlashPageState extends State<FlashPage> {
                 ],
               ],
             ),
+            Text("Current slot: ${controller.slot?.name ?? 'None detected'}"),
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -109,6 +111,7 @@ class _FlashPageState extends State<FlashPage> {
                     ElevatedButton(
                       onPressed: () async {
                         await controller.detectProduct();
+                        await controller.detectSlot();
                       },
                       child: const Text('Detect device'),
                     ),

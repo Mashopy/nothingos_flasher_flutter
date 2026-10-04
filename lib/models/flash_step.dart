@@ -1,3 +1,11 @@
+enum Slot {
+  a,
+  b;
+
+  String get suffix => '_$name';
+  Slot get other => this == a ? b : a;
+}
+
 class FlashStep {
   final String partition;
   final String file;

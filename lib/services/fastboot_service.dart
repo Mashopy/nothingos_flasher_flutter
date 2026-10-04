@@ -21,7 +21,7 @@ class FastbootService {
     return result.stdout.toString();
   }
 
-  Future<String> getCurrentSlot() async {
+  Future<Slot> getCurrentSlot() async {
     final result = await Process.run(FastbootResolver.path, [
       'getvar',
       'current-slot',
@@ -32,13 +32,13 @@ class FastbootService {
     }
 
     final output = result.stdout.toString() + result.stderr.toString();
-    final match = RegExp(r'current-slot:\s*([^\s]+)').firstMatch(output);
+    final match = RegExp(r'current-slot:\s*([ab])').firstMatch(output);
 
     if (match == null) {
-      throw Exception('Failed to parse product from output: $output');
+      throw Exception('Failed to parse current-slot from output: $output');
     }
 
-    return '_${match.group(1)!}';
+    return Slot.values.byName(match.group(1)!);
   }
 
   Future<String> getProduct() async {
@@ -61,83 +61,58 @@ class FastbootService {
     return match.group(1)!;
   }
 
-  Future<void> flash(List<FlashStep> steps, void Function(String) log) async {
-    for (final step in steps) {
-      log("Flashing ${step.partition}...\n");
+  Future<void> _run(List<String> args, void Function(String) log) async {
+    final process = await Process.start(FastbootResolver.path, args);
+    final decoder = SystemEncoding().decoder;
 
-      final process = await Process.start(FastbootResolver.path, [
-        "flash",
-        step.partition,
-        step.file,
-      ]);
+    await Future.wait([
+      process.stdout.transform(decoder).forEach(log),
+      process.stderr.transform(decoder).forEach(log),
+    ]);
 
-      process.stdout.transform(SystemEncoding().decoder).listen(log);
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('fastboot ${args.join(' ')} failed ($exitCode)');
+    }
+  }
 
-      process.stderr.transform(SystemEncoding().decoder).listen(log);
-
-      final exitCode = await process.exitCode;
-
-      if (exitCode != 0) {
-        throw Exception('Failed to flash ${step.partition}');
-      }
+  Future<void> flash(
+    List<FlashStep> steps,
+    Slot slot,
+    void Function(String) log,
+  ) async {
+    for (final s in steps) {
+      final target = '${s.partition}${slot.suffix}';
+      log("Flashing ${s.partition}...\n");
+      await _run(['flash', target, s.file], log);
     }
   }
 
   Future<void> eraseLogicalPartitions(
     List<LogicalStep> steps,
-    String currentSlot,
+    Slot slot,
     void Function(String) log,
   ) async {
-    final List<String> targets = [];
-
-    for (final p in steps) {
-      targets.add('${p.partition}$currentSlot');
-      targets.add('${p.partition}$currentSlot-cow');
-    }
-
-    for (final target in targets) {
-      log("Deleting logical partition $target...\n");
-
-      final process = await Process.start(FastbootResolver.path, [
-        "delete-logical-partition",
-        target,
-      ]);
-
-      process.stdout.transform(SystemEncoding().decoder).listen(log);
-
-      process.stderr.transform(SystemEncoding().decoder).listen(log);
-
-      final exitCode = await process.exitCode;
-
-      if (exitCode != 0) {
-        throw Exception('Failed to delete $target');
+    for (final s in steps) {
+      for (final target in [
+        '${s.partition}${slot.suffix}',
+        '${s.partition}${slot.suffix}-cow',
+      ]) {
+        log('Deleting logical partition $target...\n');
+        await _run(['delete-logical-partition', target], log);
       }
     }
   }
 
   Future<void> createLogicalPartitions(
     List<LogicalStep> steps,
-    String currentSlot,
+    Slot slot,
     void Function(String) log,
   ) async {
-    for (final step in steps) {
-      log("Creating logical partition ${step.partition}$currentSlot...\n");
-
-      final process = await Process.start(FastbootResolver.path, [
-        "create-logical-partition",
-        '${step.partition}$currentSlot',
-        "1",
-      ]);
-
-      process.stdout.transform(SystemEncoding().decoder).listen(log);
-
-      process.stderr.transform(SystemEncoding().decoder).listen(log);
-
-      final exitCode = await process.exitCode;
-
-      if (exitCode != 0) {
-        throw Exception('Failed to create ${step.partition}$currentSlot');
-      }
+    for (final s in steps) {
+      final target = '${s.partition}${slot.suffix}';
+      log('Creating logical partition $target...\n');
+      await _run(['create-logical-partition', target, '1'], log);
     }
   }
 }
