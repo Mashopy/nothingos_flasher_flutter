@@ -10,4 +10,3 @@ class LogicalStep {
   final String partition;
   LogicalStep(this.partition);
 }
-

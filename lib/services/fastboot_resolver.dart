@@ -26,7 +26,7 @@ class FastbootResolver {
 
   static Future<String> _windows() async {
     final pathEnv = Platform.environment["PATH"] ?? "";
-    
+
     // Windows uses semicolon as the PATH separator
     final paths = pathEnv.split(";");
 
@@ -44,9 +44,9 @@ class FastbootResolver {
 
   static Future<String> _shellWhich(String bin) async {
     final shell = Platform.environment['SHELL'] ?? '/bin/bash';
-    
+
     final result = await Process.run(shell, ['-lc', 'which $bin']);
-    
+
     if (result.exitCode == 0) {
       final resolvedPath = result.stdout.toString().trim();
       if (resolvedPath.isNotEmpty && File(resolvedPath).existsSync()) {

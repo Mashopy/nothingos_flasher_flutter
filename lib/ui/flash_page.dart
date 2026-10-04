@@ -27,24 +27,21 @@ class _FlashPageState extends State<FlashPage> {
   void initState() {
     super.initState();
 
-    controller = FlashController(
-      FastbootService(),
-      () {
-        if (!mounted) return;
+    controller = FlashController(FastbootService(), () {
+      if (!mounted) return;
 
-        setState(() {});
+      setState(() {});
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (scrollController.hasClients) {
-            scrollController.animateTo(
-              scrollController.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOut,
-            );
-          }
-        });
-      },
-    );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollController.hasClients) {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    });
   }
 
   Future<void> pickFirmware() async {
@@ -80,9 +77,7 @@ class _FlashPageState extends State<FlashPage> {
     final String displayName = DeviceMapper.getDisplayName(controller.product);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NOTHING OS flash tool'),
-      ),
+      appBar: AppBar(title: const Text('NOTHING OS flash tool')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -90,20 +85,20 @@ class _FlashPageState extends State<FlashPage> {
           children: [
             Row(
               children: [
-              Text(
-                "Product: ${controller.product.isEmpty ? 'None detected' : controller.product}",
-              ),
-              if (displayName.isNotEmpty) ...[
-                    const SizedBox(width: 4),
-                    Text(
-                      "- $displayName",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                Text(
+                  "Product: ${controller.product.isEmpty ? 'None detected' : controller.product}",
+                ),
+                if (displayName.isNotEmpty) ...[
+                  const SizedBox(width: 4),
+                  Text(
+                    "- $displayName",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                  ],
+                  ),
                 ],
-              ),
+              ],
+            ),
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,

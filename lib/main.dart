@@ -7,9 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions(
-    title: '', 
-  );
+  WindowOptions windowOptions = const WindowOptions(title: '');
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
@@ -33,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'NOTHING OS flash tool',
-      
+
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -55,10 +53,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
           elevation: 0,
-          titleTextStyle: TextStyle(
-            fontFamily: 'Ndot-57-Caps',
-            fontSize: 24, 
-          ),
+          titleTextStyle: TextStyle(fontFamily: 'Ndot-57-Caps', fontSize: 24),
         ),
 
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -72,11 +67,8 @@ class MyApp extends StatelessWidget {
         ),
 
         checkboxTheme: CheckboxThemeData(
-          side: const BorderSide(
-            color: Colors.grey,
-            width: 2.0,
-          ),
-          
+          side: const BorderSide(color: Colors.grey, width: 2.0),
+
           fillColor: WidgetStateProperty.resolveWith<Color>((states) {
             if (states.contains(WidgetState.selected)) {
               return const Color(0xFFFF0000); // Ticked: Nothing Red
@@ -87,9 +79,7 @@ class MyApp extends StatelessWidget {
           checkColor: const WidgetStatePropertyAll(Colors.white),
         ),
 
-        listTileTheme: const ListTileThemeData(
-          textColor: Colors.black,
-        ),
+        listTileTheme: const ListTileThemeData(textColor: Colors.black),
       ),
       home: FlashPage(),
     );

@@ -10,10 +10,7 @@ class FastbootService {
       args.add(cmd2);
     }
 
-    final result = await Process.run(
-      FastbootResolver.path,
-      args
-    );
+    final result = await Process.run(FastbootResolver.path, args);
 
     if (result.exitCode != 0) {
       throw Exception(
@@ -25,10 +22,10 @@ class FastbootService {
   }
 
   Future<String> getCurrentSlot() async {
-    final result = await Process.run(
-      FastbootResolver.path,
-      ['getvar', 'current-slot'],
-    );
+    final result = await Process.run(FastbootResolver.path, [
+      'getvar',
+      'current-slot',
+    ]);
 
     if (result.exitCode != 0) {
       throw Exception('Failed to get current-slot: ${result.stderr}');
@@ -45,10 +42,10 @@ class FastbootService {
   }
 
   Future<String> getProduct() async {
-    final result = await Process.run(
-      FastbootResolver.path,
-      ['getvar', 'product'],
-    );
+    final result = await Process.run(FastbootResolver.path, [
+      'getvar',
+      'product',
+    ]);
 
     if (result.exitCode != 0) {
       throw Exception('Failed to get product: ${result.stderr}');
@@ -68,18 +65,15 @@ class FastbootService {
     for (final step in steps) {
       log("Flashing ${step.partition}...\n");
 
-      final process = await Process.start(
-        FastbootResolver.path,
-        ["flash", step.partition, step.file],
-      );
-    
-      process.stdout
-        .transform(SystemEncoding().decoder)
-        .listen(log);
+      final process = await Process.start(FastbootResolver.path, [
+        "flash",
+        step.partition,
+        step.file,
+      ]);
 
-      process.stderr
-        .transform(SystemEncoding().decoder)
-        .listen(log);
+      process.stdout.transform(SystemEncoding().decoder).listen(log);
+
+      process.stderr.transform(SystemEncoding().decoder).listen(log);
 
       final exitCode = await process.exitCode;
 
@@ -92,10 +86,10 @@ class FastbootService {
   Future<void> eraseLogicalPartitions(
     List<LogicalStep> steps,
     String currentSlot,
-    void Function(String) log
+    void Function(String) log,
   ) async {
     final List<String> targets = [];
-    
+
     for (final p in steps) {
       targets.add('${p.partition}$currentSlot');
       targets.add('${p.partition}$currentSlot-cow');
@@ -104,18 +98,14 @@ class FastbootService {
     for (final target in targets) {
       log("Deleting logical partition $target...\n");
 
-      final process = await Process.start(
-        FastbootResolver.path,
-        ["delete-logical-partition", target],
-      );
+      final process = await Process.start(FastbootResolver.path, [
+        "delete-logical-partition",
+        target,
+      ]);
 
-      process.stdout
-        .transform(SystemEncoding().decoder)
-        .listen(log);
+      process.stdout.transform(SystemEncoding().decoder).listen(log);
 
-      process.stderr
-        .transform(SystemEncoding().decoder)
-        .listen(log);
+      process.stderr.transform(SystemEncoding().decoder).listen(log);
 
       final exitCode = await process.exitCode;
 
@@ -128,23 +118,20 @@ class FastbootService {
   Future<void> createLogicalPartitions(
     List<LogicalStep> steps,
     String currentSlot,
-    void Function(String) log
+    void Function(String) log,
   ) async {
     for (final step in steps) {
       log("Creating logical partition ${step.partition}$currentSlot...\n");
 
-      final process = await Process.start(
-        FastbootResolver.path,
-        ["create-logical-partition", '${step.partition}$currentSlot', "1"],
-      );
+      final process = await Process.start(FastbootResolver.path, [
+        "create-logical-partition",
+        '${step.partition}$currentSlot',
+        "1",
+      ]);
 
-      process.stdout
-        .transform(SystemEncoding().decoder)
-        .listen(log);
+      process.stdout.transform(SystemEncoding().decoder).listen(log);
 
-      process.stderr
-        .transform(SystemEncoding().decoder)
-        .listen(log);
+      process.stderr.transform(SystemEncoding().decoder).listen(log);
 
       final exitCode = await process.exitCode;
 

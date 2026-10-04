@@ -314,9 +314,7 @@ final Map<String, DeviceProfile> deviceProfiles = {
       "vbmeta_system",
       "vbmeta_vendor",
     ],
-    fastbootdPartitions: [
-      "init_boot",
-    ],
+    fastbootdPartitions: ["init_boot"],
     dynamicPartitions: [
       // Dynamic partitions
       "system",
@@ -327,6 +325,6 @@ final Map<String, DeviceProfile> deviceProfiles = {
       "system_dlkm",
       "vendor_dlkm",
       "odm_dlkm",
-    ]
+    ],
   ),
 };

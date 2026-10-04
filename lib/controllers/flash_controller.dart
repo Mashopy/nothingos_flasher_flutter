@@ -25,7 +25,7 @@ class FlashController {
   List<FlashStep> buildBootloaderSteps(
     DeviceProfile profile,
     FirmwarePackage firmware,
-    String currentSlot
+    String currentSlot,
   ) {
     final partitions = [
       "boot",
@@ -76,7 +76,7 @@ class FlashController {
   List<FlashStep> buildFastbootdSteps(
     DeviceProfile profile,
     FirmwarePackage firmware,
-    String currentSlot
+    String currentSlot,
   ) {
     final fastbootdPartitions = [
       // Qualcomm-based devices
@@ -125,7 +125,7 @@ class FlashController {
   List<FlashStep> buildDynamicSteps(
     DeviceProfile profile,
     FirmwarePackage firmware,
-    String currentSlot
+    String currentSlot,
   ) {
     final dynamicPartitions = [
       // Dynamic partitions
@@ -154,7 +154,7 @@ class FlashController {
 
   List<LogicalStep> buildSetupLogicalSteps(
     DeviceProfile profile,
-    FirmwarePackage firmware
+    FirmwarePackage firmware,
   ) {
     final dynamicPartitions = [
       // Dynamic partitions
@@ -194,8 +194,7 @@ class FlashController {
     bool rebootToSystem = true,
     bool formatData = false,
     bool lockBootloader = false,
-    }
-  ) async {
+  }) async {
     _log("Detecting device...\n");
 
     final device = await service.command("devices");
@@ -209,12 +208,16 @@ class FlashController {
     _log("Current slot: $currentSlot\n");
 
     _log("\nFlashing partitions in bootloader mode...\n");
-    final bootloaderSteps = buildBootloaderSteps(profile, firmware, currentSlot);
+    final bootloaderSteps = buildBootloaderSteps(
+      profile,
+      firmware,
+      currentSlot,
+    );
     await service.flash(bootloaderSteps, _log);
-  
+
     _log("\nRebooting to fastbootd mode...\n");
     await service.command("reboot fastboot");
-    
+
     _log("\nFlashing parititions in fastbootd mode...\n");
     final fastbootdSteps = buildFastbootdSteps(profile, firmware, currentSlot);
     await service.flash(fastbootdSteps, _log);
@@ -226,13 +229,21 @@ class FlashController {
 
     _log("\nCreating dynamic partitions in fastbootd mode...\n");
     final createLogicalSteps = buildSetupLogicalSteps(profile, firmware);
-    await service.createLogicalPartitions(createLogicalSteps, currentSlot, _log);
-    await service.createLogicalPartitions(createLogicalSteps, oppositeSlot, _log);
+    await service.createLogicalPartitions(
+      createLogicalSteps,
+      currentSlot,
+      _log,
+    );
+    await service.createLogicalPartitions(
+      createLogicalSteps,
+      oppositeSlot,
+      _log,
+    );
 
     _log("\nFlashing dynamic partitions in fastbootd mode...\n");
     final dynamicSteps = buildDynamicSteps(profile, firmware, currentSlot);
     await service.flash(dynamicSteps, _log);
-  
+
     if (formatData) {
       _log("\nErasing userdata and metadata partitions...");
       await service.command("erase userdata");
@@ -246,7 +257,7 @@ class FlashController {
       _log("\nLocking the bootloader please confirm on your device...\n");
       await service.command("flashing lock");
     }
-  
+
     if (rebootToSystem) {
       _log("\nRebooting to normal mode...\n");
       await service.command("reboot");
