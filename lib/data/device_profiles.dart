@@ -148,7 +148,7 @@ final Map<String, DeviceProfile> deviceProfiles = {
     ],
   ),
 
-  // Nothing Phone (3a), (3a) Pro and (4a) profile
+  // Nothing Phone (3a), (3a) Pro, (4a) and (4b) profile
   "volcano": DeviceProfile(
     product: "volcano",
     partitions: [
