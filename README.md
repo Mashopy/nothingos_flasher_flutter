@@ -21,7 +21,7 @@ factory image archive directory and then press on flash images button and let th
 
 Additionnally, you can choose if you want to reboot to system, format data or lock the bootloader as options.
 
-Do note that this tool will only flash partitions to your current [A/B slot](https://source.android.com/docs/core/ota/virtual_ab), if you want to flash both slots, please switch to the opposite slot afterwards.
+Do note that this tool will flash partitions to both of your [A/B slot](https://source.android.com/docs/core/ota/virtual_ab).
 
 ## Supported Nothing and CMF devices
 
@@ -38,6 +38,7 @@ Currently, all Nothing and CMF devices running NothingOS are supported by this t
  - Nothing Phone (3a) Lite
  - Nothing Phone (4a)
  - Nothing Phone (4a) Pro
+ - Nothing Phone (4b)
 
  ### CMF devices
  - CMF Phone 1
